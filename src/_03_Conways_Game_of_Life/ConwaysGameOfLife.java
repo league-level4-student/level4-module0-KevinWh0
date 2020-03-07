@@ -33,6 +33,8 @@ public class ConwaysGameOfLife extends JPanel implements ActionListener{
 	}
 	
 	public void launchGame() {
+		System.out.println("Start");
+
 		//build the window and start the simulation
 		//setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setLayout(new BorderLayout());

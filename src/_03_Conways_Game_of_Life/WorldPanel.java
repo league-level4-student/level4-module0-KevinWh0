@@ -27,24 +27,30 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 		addMouseListener(this);
 		timer = new Timer(500, this);
 		this.cellsPerRow = cpr;
-	
+		System.out.println(h);
 		//2. Calculate the cell size.
-		cellSize = cpr/w;
+		cellSize = h/cpr;
 		
 		//3. Initialize the cell array to the appropriate size.
 		cells = new Cell[cpr][cpr];
 		//3. Iterate through the array and initialize each cell.
 		//   Don't forget to consider the cell's dimensions when 
 		//   passing in the location.
+		for (int i = 0; i < cellsPerRow; i++) {
+			for (int j = 0; j < cellsPerRow; j++) {
+				cells[i][j] = new Cell(i*cellSize, j*cellSize, cellSize);
+			}
+		}
 		
 	}
 	
 	public void randomizeCells() {
 		//4. Iterate through each cell and randomly set each
 		//   cell's isAlive memeber to true of false
+		Random rand = new Random();
 		for (int i = 0; i < cellsPerRow; i++) {
 			for (int j = 0; j < cellsPerRow; j++) {
-				cells[i][j] = new Cell(i, j, cellSize);
+				cells[i][j].isAlive = rand.nextBoolean();
 			}
 		}
 		repaint();
@@ -75,19 +81,14 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 	@Override
 	public void paintComponent(Graphics g) {
 		//6. Iterate through the cells and draw them all
-
-		for (int i = 0; i < cellsPerRow; i++) {
-			for (int j = 0; j < cellsPerRow; j++) {
-				//Random rand = new Random();
-				g.setColor(Color.red);
-				g.fillRect(cells[i][j].getX(), cells[i][j].getY(), cellSize, cellSize);
-			}
-		}
-		
-		
-		// draws grid
-		g.setColor(Color.BLACK);
-		g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+        for (int i = 0; i < this.cells.length; ++i) {
+            for (int j = 0; j < this.cells[0].length; ++j) {
+                this.cells[i][j].draw(g);
+            }
+        }
+        //Bounding Box
+        g.setColor(Color.BLACK);
+        g.drawRect(0, 0, this.getWidth() - 1, this.getHeight() - 1);
 	}
 	
 	//advances world one step
@@ -134,8 +135,11 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 		//10. Use e.getX() and e.getY() to determine
 		//    which cell is clicked. Then toggle
 		//    the isAlive variable for that cell.
-		
-		
+		if(this.cells[e.getX()/this.cellSize][e.getY()/this.cellSize].isAlive) {
+			this.cells[e.getX()/this.cellSize][e.getY()/this.cellSize].isAlive = false;
+		}else {
+			this.cells[e.getX()/this.cellSize][e.getY()/this.cellSize].isAlive = true;
+		}
 		
 		
 		repaint();
