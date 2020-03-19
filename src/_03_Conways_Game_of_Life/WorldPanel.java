@@ -27,7 +27,6 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 		addMouseListener(this);
 		timer = new Timer(500, this);
 		this.cellsPerRow = cpr;
-		System.out.println(h);
 		//2. Calculate the cell size.
 		cellSize = h/cpr;
 		
@@ -97,9 +96,16 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 		// . using the getLivingNeighbors method.
 		int[][] livingNeighbors = new int[cellsPerRow][cellsPerRow];
 		
-        for (int i = 0; i < this.cells.length; i++) {
-            for (int j = 0; j < this.cells[0].length; j++) {
+        for (int i = 0; i < cellsPerRow; i++) {
+            for (int j = 0; j < cellsPerRow; j++) {
                 livingNeighbors[i][j] = this.getLivingNeighbors(i, j);
+            }
+        }
+		
+		//System.out.println(this.getLivingNeighbors(10,10));
+		
+        for (int i = 0; i < cellsPerRow; i++) {
+            for (int j = 0; j < cellsPerRow; j++) {
                 cells[i][j].liveOrDie(livingNeighbors[i][j]);
             }
         }
@@ -118,12 +124,16 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 	public int getLivingNeighbors(int x, int y){
 		int numb = 0;
 		
-		for (int i = -1; i < 3; i++) {
-			for (int j = -1; j < 3; j++) {
-				if(i != 0 && j != 0) {
-					if(x+i > -1 && y+j > -1 && x+i < cellsPerRow && y+j < cellsPerRow) {
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				if(!(i == 0 && j == 0)) {
+					
+					//if(x+i > -1 && y+j > -1 && x+i < cellsPerRow && y+j < cellsPerRow) {
+					try {
 						if(cells[x+i][y+j].isAlive) numb++;
-					}
+						//this.cells[x+i][y+j].isAlive = true;
+					}catch(Exception e) {}
+					//}
 				}
 			}
 		}

@@ -20,7 +20,7 @@ public class Maze {
 
 	//4. This method iterates through the cells and draws them
 	public void draw(Graphics g) {
-		
+
 	}
 	
 	//4b. This method returns the selected cell.
